@@ -1,0 +1,93 @@
+openapi: 3.0.3
+info:
+  title: Parties API
+  version: 1.0.0
+  description: Create and manage party records.
+paths:
+  /parties:
+    post:
+      summary: Create a party
+      operationId: createParty
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PartyCreate"
+      responses:
+        "201":
+          description: Party created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PartyCreated"
+        "400":
+          description: Validation failed
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ValidationError"
+        "409":
+          description: A party with this email already exists
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ValidationError"
+components:
+  schemas:
+    PartyCreate:
+      type: object
+      required:
+        - type
+        - email
+        - postcode
+      properties:
+        type:
+          type: string
+          enum:
+            - Natural Person
+            - Legal Entity
+        email:
+          type: string
+          format: email
+          maxLength: 254
+        postcode:
+          type: string
+          maxLength: 8
+          pattern: "^[A-Za-z]{1,2}\\d[A-Za-z\\d]?\\s?\\d[A-Za-z]{2}$"
+        fullName:
+          type: string
+          maxLength: 140
+        dateOfBirth:
+          type: string
+          format: date
+        registeredName:
+          type: string
+          maxLength: 160
+        companyRegistrationNumber:
+          type: string
+          pattern: "^[A-Za-z0-9]{8}$"
+    PartyCreated:
+      type: object
+      required:
+        - id
+      properties:
+        id:
+          type: string
+    ValidationError:
+      type: object
+      required:
+        - errors
+      properties:
+        errors:
+          type: array
+          items:
+            type: object
+            required:
+              - field
+              - message
+            properties:
+              field:
+                type: string
+              message:
+                type: string
