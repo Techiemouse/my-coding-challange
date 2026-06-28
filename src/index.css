@@ -1,10 +1,22 @@
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
+@import "tailwindcss";
+
+@theme {
+  --color-brand-purple: #3d22a8;
+  --color-brand-purple-hover: #311a8a;
+  --color-brand-pink: #c8187c;
+  --color-brand-blue: #4DAAE4;
+  --color-brand-blue-hover: #3a96d0;
 }
 
-body {
-  margin: 0;
-  font-family: system-ui, sans-serif;
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.fade-in {
+  animation: fadeIn 0.2s ease-out;
+}
+
+.brand-gradient {
+  background: linear-gradient(135deg, #c8187c 0%, #7b2fbe 50%, #3d22a8 100%);
 }
